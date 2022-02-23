@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Module3HW1
+﻿namespace Module3HW1
 {
     public static class Starter
     {
@@ -62,6 +56,7 @@ namespace Module3HW1
             stringList.Add("4ur4hella");
             Print(stringList);
         }
+
         private static void Print(MyList<int> list)
         {
             foreach (var item in list)
@@ -70,8 +65,10 @@ namespace Module3HW1
                 {
                     continue;
                 }
+
                 Console.Write($"{item} ");
             }
+
             Console.WriteLine($"\nLast Index: {list.LastIndex} Lenght: {list.CurrentLenght}");
         }
 
@@ -81,8 +78,8 @@ namespace Module3HW1
             {
                 Console.Write($"{item} ");
             }
+
             Console.WriteLine($"\nLast Index: {list.LastIndex} Lenght: {list.CurrentLenght}");
         }
     }
 }
-

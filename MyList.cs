@@ -1,132 +1,152 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 
 namespace Module3HW1
 {
-    public class MyList<T> :IList<T>, IEnumerable<T> where T : IComparable<T>
+    public class MyList<T> : IList<T>, IEnumerable<T>
+        where T : IComparable<T>
     {
-        public T[] list;
+        public const int Lenght = 10;
+        private T[] _list;
 
-        public const int lenght = 10;
-        private int currentLenght;
-        private int lastIndex;
+        private int _currentLenght;
+        private int _lastIndex;
+        public MyList()
+        {
+            _currentLenght = Lenght;
+            _list = new T[_currentLenght];
+            _lastIndex = 0;
+        }
+
+        public MyList(T[] items)
+        {
+            _currentLenght = items.Length;
+            _lastIndex = items.Length;
+            _list = items;
+        }
+
         public int CurrentLenght
         {
-            get { return currentLenght; }
+            get
+            {
+                return _currentLenght;
+            }
         }
+
         public int LastIndex
         {
             get
-            { return lastIndex; }
-        }
-
-        public MyList()
-        {
-            currentLenght = lenght;
-            list = new T[currentLenght];
-            lastIndex = 0;
-        }
-        public MyList(T[] items)
-        {
-            currentLenght = items.Length;
-            lastIndex = items.Length;
-            list = items;
+            {
+                return _lastIndex;
+            }
         }
 
         public void Add(T item)
         {
             if (ListIsFull())
             {
-                currentLenght = currentLenght * 2;
+                _currentLenght = _currentLenght * 2;
 
-                T[] newList = new T[currentLenght];
+                T[] newList = new T[_currentLenght];
 
-                for (int index = 0; index < list.Length; index++)
+                for (int index = 0; index < _list.Length; index++)
                 {
-                    newList[index] = list[index];
+                    newList[index] = _list[index];
                 }
 
-                list = newList;
+                _list = newList;
             }
-            list[lastIndex++] = item;
+
+            _list[_lastIndex++] = item;
         }
+
         public void AddRange(params T[] items)
         {
             foreach (var item in items)
             {
                 if (ListIsFull())
+                {
                     Resize();
+                }
+
                 Add(item);
             }
-            
         }
-        private void Resize()
+
+        public void Resize()
         {
-            int newLenght = list.Length + list.Length;
+            int newLenght = _list.Length + _list.Length;
             T[] newList = new T[newLenght];
 
-            for (int i = 0; i < list.Length; i++)
+            for (int i = 0; i < _list.Length; i++)
             {
-                newList[i] = list[i];
+                newList[i] = _list[i];
             }
-            currentLenght = newList.Length;
-            list = newList;
+
+            _currentLenght = newList.Length;
+            _list = newList;
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            for (int i = 0; i < list.Length; i++)
+            for (int i = 0; i < _list.Length; i++)
             {
-                yield return list[i];
+                yield return _list[i];
             }
         }
 
         public bool Remove(T item)
         {
             bool removed = false;
-            T[] newList = new T[currentLenght];
-            for (int i = 0, j = 0; i < currentLenght; i++)
+            T[] newList = new T[_currentLenght];
+
+            for (int i = 0, j = 0; i < _currentLenght; i++)
             {
-                if (list[i].Equals(item))
+                if (_list[i].Equals(item))
                 {
                     removed = true;
-                    lastIndex--;
+                    _lastIndex--;
                     continue;
                 }
-                newList[j] = list[i];
+
+                newList[j] = _list[i];
                 j++;
             }
-            list = newList;
+
+            _list = newList;
 
             return removed;
         }
+
         public void RemoveAt(int index)
         {
-            T[] newList = new T[currentLenght];
+            T[] newList = new T[_currentLenght];
             index--; /////////////////////////////////
-            for (int i = 0, j = 0; i < currentLenght; i++)
+            for (int i = 0, j = 0; i < _currentLenght; i++)
             {
                 if (i.Equals(index))
                 {
-                    lastIndex--;
+                    _lastIndex--;
                     continue;
                 }
-                newList[j] = list[i];
+
+                newList[j] = _list[i];
                 j++;
             }
-            list = newList;
+
+            _list = newList;
         }
+
         public void Sort()
         {
-            for (int i = 0; i < list.Length; i++)
+            for (int i = 0; i < _list.Length; i++)
             {
-                for (int j = 0; j < list.Length - 1; j++)
+                for (int j = 0; j < _list.Length - 1; j++)
                 {
-                    if (list[j].CompareTo(list[j + 1]) > 0)
+                    if (_list[j].CompareTo(_list[j + 1]) > 0)
                     {
-                        T item = list[j];
-                        list[j] = list[j + 1];
-                        list[j + 1] = item;
+                        T item = _list[j];
+                        _list[j] = _list[j + 1];
+                        _list[j + 1] = item;
                     }
                 }
             }
@@ -139,10 +159,12 @@ namespace Module3HW1
 
         private bool ListIsFull()
         {
-            if (lastIndex == list.Length)
+            if (_lastIndex == _list.Length)
+            {
                 return true;
+            }
+
             return false;
         }
-    
     }
 }
